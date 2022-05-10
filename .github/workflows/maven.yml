@@ -20,14 +20,8 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: maven
-    - name: Download Maven
-      run: |
-        curl -sL https://www-eu.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.zip -o maven.zip
-        sudo yum update
-        sudo yum -y install unzip
-        sudo unzip -d /usr/share maven.zip
-        sudo rm maven.zip
-        sudo ln -s /usr/share/apache-maven-3.6.3/bin/mvn /usr/bin/mvn
-        echo "M2_HOME=/usr/share/apache-maven-3.6.3" | tee -a /etc/environment
+    - name: Set up Maven Path
+      id: mvn_path
+      run: echo "$M2" >> $GITHUB_ENV
     - name: Build with Maven
       run: mvn -B package --file pom.xml
